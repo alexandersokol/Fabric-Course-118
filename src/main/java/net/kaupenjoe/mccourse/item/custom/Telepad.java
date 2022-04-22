@@ -2,12 +2,14 @@ package net.kaupenjoe.mccourse.item.custom;
 
 import net.kaupenjoe.mccourse.block.ModBlocks;
 import net.kaupenjoe.mccourse.block.custom.TeleportBlock;
+import net.kaupenjoe.mccourse.block.custom.TeleportBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
@@ -36,18 +38,25 @@ public class Telepad extends Item {
         ItemStack stack = context.getStack();
         if (state.getBlock() == ModBlocks.TELEPORT_BLOCK && stack.hasNbt()) {
             if (stack.getNbt().contains(KEY_X)) {
-                TeleportBlock block = ((TeleportBlock) state.getBlock());
                 int x = stack.getNbt().getInt(KEY_X);
                 int y = stack.getNbt().getInt(KEY_Y);
                 int z = stack.getNbt().getInt(KEY_Z);
-                block.setDestination(state, x, y, z);
-                System.out.println("Position set to block");
+
+                state.with(TeleportBlock.HAS_DESTINATION, true);
+                TeleportBlockEntity entity = ((TeleportBlockEntity) context.getWorld().getBlockEntity(pos));
+                entity.setDestination(new BlockPos(x, y, z));
+
+                context.getPlayer().sendMessage(new LiteralText("Teleport position set to " + x + " " + y + " " + z), false);
             }
         } else {
+            if(!stack.hasNbt()){
+                stack.setNbt(new NbtCompound());
+            }
             stack.getNbt().putInt(KEY_X, pos.getX());
             stack.getNbt().putInt(KEY_Y, pos.getY());
             stack.getNbt().putInt(KEY_Z, pos.getZ());
-            System.out.println("New position inserted");
+            context.getPlayer().sendMessage(new LiteralText("Teleport position saved to telepad"), false);
+            System.out.println("Teleport position saved to telepad");
         }
         return ActionResult.SUCCESS;
     }

@@ -2,14 +2,18 @@ package net.kaupenjoe.mccourse.block;
 
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.kaupenjoe.mccourse.MCCourseMod;
 import net.kaupenjoe.mccourse.block.custom.*;
 import net.kaupenjoe.mccourse.item.ModItemGroups;
 import net.minecraft.block.*;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 
 public class ModBlocks {
@@ -67,6 +71,8 @@ public class ModBlocks {
             new TeleportBlock(FabricBlockSettings.of(Material.METAL).strength(4.0f).requiresTool()
                     .luminance((state) -> state.get(TeleportBlock.HAS_DESTINATION) ? 15 : 0)), ModItemGroups.COURSE);
 
+    public static final BlockEntityType<TeleportBlockEntity> TELEPORT_BLOCK_ENTITY =
+            registerBlockEntity(TeleportBlockEntity::new, TELEPORT_BLOCK, "teleport_block_entity");
 
     private static Block registerBlock(String name, Block block, ItemGroup group) {
         registerBlockItem(name, block, group);
@@ -76,6 +82,11 @@ public class ModBlocks {
     private static Item registerBlockItem(String name, Block block, ItemGroup group) {
         return Registry.register(Registry.ITEM, new Identifier(MCCourseMod.MOD_ID, name),
                 new BlockItem(block, new FabricItemSettings().group(group)));
+    }
+
+    private static <T extends BlockEntity> BlockEntityType<T> registerBlockEntity(FabricBlockEntityTypeBuilder.Factory<T> factory, Block block, String identifier) {
+        BlockEntityType<T> type = FabricBlockEntityTypeBuilder.create(factory, block).build();
+        return Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(MCCourseMod.MOD_ID + ":" + identifier), type);
     }
 
     public static void registerModBlocks() {

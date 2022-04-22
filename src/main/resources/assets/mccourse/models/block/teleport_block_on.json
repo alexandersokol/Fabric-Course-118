@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "mccourse:block/orichalcum_lamp_on"
+    "all": "mccourse:block/teleport_block_on"
   }
 }
