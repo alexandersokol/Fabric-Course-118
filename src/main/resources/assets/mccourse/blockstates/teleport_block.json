@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "has_destination=false": { "model": "mccourse:block/teleport_block_off" },
+    "has_destination=true": { "model": "mccourse:block/teleport_block_on" }
+  }
+}

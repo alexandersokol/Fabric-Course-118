@@ -70,6 +70,9 @@ public class ModItems {
     public static final Item DATA_TABLET = registerItem("data_tablet",
             new DataTabletItem(new FabricItemSettings().group(ModItemGroups.COURSE).maxCount(1)));
 
+    public static final Item TELEPAD = registerItem("telepad",
+            new Telepad(new FabricItemSettings().group(ModItemGroups.COURSE).maxCount(1)));
+
 
     private static Item registerItem(String name, Item item) {
         return Registry.register(Registry.ITEM, new Identifier(MCCourseMod.MOD_ID, name), item);

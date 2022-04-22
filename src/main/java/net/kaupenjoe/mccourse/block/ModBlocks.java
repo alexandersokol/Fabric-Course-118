@@ -63,6 +63,10 @@ public class ModBlocks {
             new OrichalcumLampBlock(FabricBlockSettings.of(Material.METAL).strength(4.0f).requiresTool()
                     .luminance((state) -> state.get(OrichalcumLampBlock.CLICKED) ? 15 : 0)), ModItemGroups.COURSE);
 
+    public static final Block TELEPORT_BLOCK = registerBlock("teleport_block",
+            new TeleportBlock(FabricBlockSettings.of(Material.METAL).strength(4.0f).requiresTool()
+                    .luminance((state) -> state.get(TeleportBlock.HAS_DESTINATION) ? 15 : 0)), ModItemGroups.COURSE);
+
 
     private static Block registerBlock(String name, Block block, ItemGroup group) {
         registerBlockItem(name, block, group);
